@@ -4,9 +4,9 @@ from dependency_injector.wiring import Provide, inject
 from dependency_injector import containers, providers
 import sys, os
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'containers'))
-import containers
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'services'))
-import services
+# import containers
+# sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'services'))
+# import services
 
 
 
@@ -14,7 +14,7 @@ import services
 Setting up and starting up the app:
 pip install fastapi
 pip install "uvicorn[standard]"
-uvicorn src:app --reload     <- use this command to run the server,it should reload automatically (because we added --reload).
+uvicorn main:app --reload     <- use this command to run the server,it should reload automatically (because we added --reload).
 http://127.0.0.1:8000/docs    for swagger
 '''
 
@@ -56,7 +56,8 @@ items = [item1, item2]
 
 @app.get("/")
 def read_root():
-    return service1.displaymessage("DEPENDENCY INJECTION DONE")
+    return Status()
+   # return service1.displaymessage("DEPENDENCY INJECTION DONE")
 
 
 @app.get("/items/{item_id}")
