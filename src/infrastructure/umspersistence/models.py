@@ -3,7 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 Base = declarative_base()
 #check out note file written in WORK> inmindAcademy > ONBOARDING > discoveringLibraries to see how to use alembic
-
+#to build models, check out https://www.tutorialspoint.com/sqlalchemy/sqlalchemy_orm_building_relationship.htm
 
 class User(Base):
     __tablename__ = 'users'
