@@ -1,20 +1,15 @@
-import abc
-
+from src.persistence.course.course_db_interface import CourseDBInterface
 import sqlalchemy as db
 
 
-class CourseDBInterface(metaclass=abc.ABCMeta):
-    @classmethod
-    def __subclasshook__(cls, subclass):
-        return (hasattr(subclass, 'add_course') and
-                callable(subclass.add_course) or
-                NotImplemented)
+class CourseDBService(CourseDBInterface):
 
+    def __init__(self, engine):
+        self.engine = engine
 
-    #@abc.abstractmethod
-    @classmethod
-    def add_course(cls, received_course):
-        engine = db.create_engine('postgresql://postgres:123456@localhost:5432/umsPython')
+    def add_course(self, received_course):
+        # engine = db.create_engine('postgresql://postgres:123456@localhost:5432/umsPython')
+        engine = self.engine.get_engine()
         connection = engine.connect()
         metadata = db.MetaData()
         courses_table = db.Table('courses', metadata, autoload=True, autoload_with=engine)
