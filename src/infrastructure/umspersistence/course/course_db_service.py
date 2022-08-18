@@ -1,4 +1,6 @@
-import sys, os
+import os
+import sys
+
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'course'))
 import course_db_interface
 
