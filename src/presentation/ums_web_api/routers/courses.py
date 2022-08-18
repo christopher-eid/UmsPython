@@ -17,6 +17,11 @@ reg = Container.course_service()
 
 
 @router.post("/courses/add_course", tags=["Add Course"])
-async def read_users(received_course: CourseModel):
+async def add_course(received_course: CourseModel):
     return reg.add_course(received_course)
+
+
+@router.post("/courses/add_course_to_mongo", tags=["Add Course"])
+async def add_course_to_mongo(received_course: CourseModel):
+    return reg.add_course_to_mongo(received_course)
 

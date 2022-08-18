@@ -10,8 +10,9 @@ interface abstraction understood from: https://www.askpython.com/python/oops/abs
 
 class CourseService(AbstractCourseService):
 
-    def __init__(self, db):
+    def __init__(self, db, mongo_db):
         self.db = db
+        self.mongo_db = mongo_db
 
     def add_course(self, received_course):
         try:
@@ -21,6 +22,18 @@ class CourseService(AbstractCourseService):
             res = self.db.add_course(received_course)
             mx = res.max_students_number
             response = ReturnCourseModel(id=res.id, name=res.name, max_students_number=mx)
+            return response
+        except AlreadyAvailableException:
+            return StatusModel(success=False, description="Course Already Available")
+
+    def add_course_to_mongo(self, received_course):
+        try:
+            available_course = self.mongo_db.get_course(received_course.name)
+            if available_course:
+                raise AlreadyAvailableException()
+            res = self.mongo_db.add_course(received_course)
+            mx = res["max_students_number"]
+            response = ReturnCourseModel(id=res["id"], name=res["name"], max_students_number=mx)
             return response
         except AlreadyAvailableException:
             return StatusModel(success=False, description="Course Already Available")

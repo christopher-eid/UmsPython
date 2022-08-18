@@ -1,7 +1,7 @@
 from abc import ABCMeta, ABC, abstractmethod
 
 
-class AbstractCourseDBService(ABC):
+class AbstractCourseMongoService(ABC):
     __metaclass__ = "ABCMeta"
 
     @abstractmethod
