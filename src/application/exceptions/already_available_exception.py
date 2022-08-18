@@ -1,0 +1,2 @@
+class AlreadyAvailableException(Exception):
+    pass

@@ -1,12 +1,5 @@
 from fastapi import FastAPI
-import os
-import sys
 
-from dependency_injector.wiring import Provide, inject
-from fastapi import FastAPI
-
-from src.application.containers.container import Container
-from src.application.course.course_service import CourseService
 from src.presentation.ums_web_api.routers import courses
 
 '''

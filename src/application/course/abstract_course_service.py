@@ -1,7 +1,7 @@
-from abc import ABCMeta, ABC, abstractmethod
+from abc import abstractmethod, ABC
 
 
-class CourseDBInterface(ABC):
+class AbstractCourseService(ABC):
     __metaclass__ = "ABCMeta"
 
     @abstractmethod
