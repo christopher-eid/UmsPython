@@ -8,6 +8,14 @@ from src.persistence.connections.db_engine import DBEngine
 from src.persistence.mongo_repositories.course.course_mongo_service import CourseMongoService
 from src.application.abstract_mongo_repositories.course.abstract_course_mongo_service import AbstractCourseMongoService
 from src.persistence.connections.mongo_db_client import MongoDBClient
+
+#firebase:
+from src.infrastructure.ums_infrastucture.firebase_connection.firebase_engine import FirebaseEngine
+from src.infrastructure.ums_infrastucture.firebase_jwt_token.firebase_auth_service import FirebaseAuthService
+from src.infrastructure.ums_infrastructure_abstraction.firebase_jwt_token.abstract_firebase_auth_service \
+    import AbstractFirebaseAuthService
+
+
 class Container(containers.DeclarativeContainer):
     config = providers.Configuration()
 
@@ -33,4 +41,14 @@ class Container(containers.DeclarativeContainer):
         AbstractCourseService.register(CourseService),
         db=db_service,
         mongo_db = mongo_db_service
+    )
+
+    #firebase
+    firebase_engine = providers.Singleton(
+        FirebaseEngine
+    )
+
+    firebase_auth_service = providers.Singleton(
+        AbstractFirebaseAuthService.register(FirebaseAuthService),
+        firebase_engine=firebase_engine
     )
