@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 
-class ReturnCourseModel(BaseModel):
+class ResponseCourseModel(BaseModel):
     id: int
     name: str
     max_students_number: int

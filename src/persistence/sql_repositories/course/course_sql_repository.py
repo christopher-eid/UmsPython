@@ -1,8 +1,8 @@
-from src.application.abstract_repositories.course.abstract_course_db_service import AbstractCourseDBService
+from src.domain.abstract_sql_repositories.course.abstract_course_sql_repository import AbstractCourseSqlRepository
 import sqlalchemy as db
 
 
-class CourseDBService(AbstractCourseDBService):
+class CourseSqlRepository(AbstractCourseSqlRepository):
 
     def __init__(self, engine):
         self.engine = engine

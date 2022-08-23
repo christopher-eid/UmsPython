@@ -1,3 +1,4 @@
+from src.application.exceptions.invalid_exception import InvalidException
 from src.infrastructure.ums_infrastructure_abstraction.firebase_jwt_token.abstract_firebase_auth_service \
     import AbstractFirebaseAuthService
 
@@ -6,11 +7,13 @@ from firebase_admin import auth
 from firebase_admin import credentials
 import pyrebase
 import json
-
+from firebase_admin import _auth_utils
+from starlette.responses import JSONResponse
 '''token creation and verification and refresh token inspired from:
    creation of access and refresh token: using pyrebase : https://github.com/thisbejim/Pyrebase
    verification of access tokens : using firebase_admin: https://firebase.google.com/docs/auth/admin/verify-id-tokens#python
    DO NOT FORGET TO DO pip install pyrebase4   not pyrebase lahala bcz: https://stackoverflow.com/questions/57333606/unknown-syntax-error-on-calling-pyrebase-in-python'''
+
 
 class FirebaseAuthService(AbstractFirebaseAuthService):
 
@@ -27,7 +30,10 @@ class FirebaseAuthService(AbstractFirebaseAuthService):
         return user["idToken"] #fresh token returned
 
     def verify_access_token(self, received_token) -> str:
-        decoded_token = auth.verify_id_token(received_token)
+        try:
+            decoded_token = auth.verify_id_token(received_token)
+        except _auth_utils.InvalidIdTokenError:
+            return JSONResponse(status_code=401, content={'reason': 'invalid jwt token'})
         uid = decoded_token['uid']
         return uid
 

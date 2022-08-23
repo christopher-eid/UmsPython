@@ -2,25 +2,21 @@ from dependency_injector import containers, providers
 
 from src.application.course.course_service import CourseService
 from src.application.course.abstract_course_service import AbstractCourseService
-from src.persistence.repositories.course.course_db_service import CourseDBService
-from src.application.abstract_repositories.course.abstract_course_db_service import AbstractCourseDBService
+from src.persistence.sql_repositories.course.course_sql_repository import CourseSqlRepository
+from src.domain.abstract_sql_repositories.course.abstract_course_sql_repository import AbstractCourseSqlRepository
 from src.persistence.connections.db_engine import DBEngine
-from src.persistence.mongo_repositories.course.course_mongo_service import CourseMongoService
-from src.application.abstract_mongo_repositories.course.abstract_course_mongo_service import AbstractCourseMongoService
+from src.persistence.nosql_repositories.course.course_nosql_repository import CourseNoSqlRepository
+from src.domain.abstract_nosql_repositories.course.abstract_course_nosql_repository import AbstractCourseNoSqlRepository
 from src.persistence.connections.mongo_db_client import MongoDBClient
 
 
 from src.application.student_cqrs.commands.add_students_excel.add_students_excel_service import AddStudentsExcelService
 from src.application.student_cqrs.commands.add_students_excel.abstract_add_students_excel_service import AbstractAddStudentsExcelService
-from src.application.abstract_repositories.student.abstract_student_db_service import AbstractStudentDBService
-from src.persistence.repositories.student.student_db_service import StudentDBService
+from src.domain.abstract_sql_repositories.student.abstract_student_sql_repository import AbstractStudentSqlRepository
+from src.persistence.sql_repositories.student.student_sql_repository import StudentSqlRepository
 
 from src.application.student_cqrs.queries.get_students_excel.get_students_excel_service import GetStudentsExcelService
 from src.application.student_cqrs.queries.get_students_excel.abstract_get_students_excel_service import AbstractGetStudentsExcelService
-
-
-from src.application.student_cqrs.commands.add_students_excel_mediatr.add_students_excel_command import AddStudentsExcelCommand
-from src.application.student_cqrs.commands.add_students_excel_mediatr.add_students_excel_command_handler import AddStudentsExcelCommandHandler
 
 #firebase:
 from src.infrastructure.ums_infrastucture.firebase_connection.firebase_engine import FirebaseEngine
@@ -42,12 +38,12 @@ class Container(containers.DeclarativeContainer):
     )
 
     db_course_service = providers.Factory(
-        AbstractCourseDBService.register(CourseDBService),
+        AbstractCourseSqlRepository.register(CourseSqlRepository),
         engine=db_engine
     )
 
     mongo_db_service = providers.Factory(
-        AbstractCourseMongoService.register(CourseMongoService),
+        AbstractCourseNoSqlRepository.register(CourseNoSqlRepository),
         mongo_db_client = mongo_db_client
     )
 
@@ -58,7 +54,7 @@ class Container(containers.DeclarativeContainer):
     )
 
     db_student_service = providers.Factory(
-        AbstractStudentDBService.register(StudentDBService),
+        AbstractStudentSqlRepository.register(StudentSqlRepository),
         engine=db_engine
     )
 

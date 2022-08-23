@@ -1,6 +1,6 @@
 from src.application.student_cqrs.commands.add_students_excel.abstract_add_students_excel_service import AbstractAddStudentsExcelService
 from src.application.exceptions.already_available_exception import AlreadyAvailableException
-from src.domain.dtomodels.status_model import StatusModel
+from src.application.models.response_models.status_model import StatusModel
 import os
 import shutil
 from pathlib import Path

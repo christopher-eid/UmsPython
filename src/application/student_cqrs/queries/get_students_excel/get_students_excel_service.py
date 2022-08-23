@@ -1,8 +1,5 @@
 from src.application.student_cqrs.queries.get_students_excel.abstract_get_students_excel_service import AbstractGetStudentsExcelService
-from src.application.exceptions.already_available_exception import AlreadyAvailableException
-from src.domain.dtomodels.status_model import StatusModel
 import os
-import shutil
 from pathlib import Path
 from numpy import random
 from fastapi.responses import FileResponse
