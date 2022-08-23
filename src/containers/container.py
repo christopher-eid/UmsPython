@@ -48,7 +48,7 @@ class Container(containers.DeclarativeContainer):
         FirebaseEngine
     )
 
-    firebase_auth_service = providers.Singleton(
+    firebase_auth_service = providers.Factory(
         AbstractFirebaseAuthService.register(FirebaseAuthService),
         firebase_engine=firebase_engine
     )

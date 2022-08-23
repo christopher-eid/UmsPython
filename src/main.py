@@ -29,7 +29,6 @@ serv = Container.firebase_auth_service()
 async def check_jwt_token_header(request: Request, call_next):
 
     if "jwt-token" in request.headers:
-        print("tatatatatatatataatatat")
         token = request.headers["jwt-token"] #PUT jwt-token NOT jwt_token because in headers _ becomes -
         try:
             firebase_user_id = serv.verify_access_token(token)
