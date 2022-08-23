@@ -1,7 +1,8 @@
 
+
 from fastapi import FastAPI, Header, Request
 from fastapi.responses import JSONResponse
-from src.presentation.ums_web_api.routers import courses, authentication
+from src.presentation.ums_web_api.routers import courses, students, authentication
 from src.containers.container import Container
 from firebase_admin import _auth_utils
 
@@ -24,7 +25,7 @@ uvicorn_access.disabled = True
 Setting up and starting up the app:
 pip install fastapi
 pip install "uvicorn[standard]"
-uvicorn main:app --reload     <- use this command to run the server,it should reload automatically (because we added --reload).
+uvicorn src.main:app --reload     <- use this command to run the server,it should reload automatically (because we added --reload).
 http://127.0.0.1:8000/docs    for swagger
 '''
 
@@ -32,6 +33,7 @@ http://127.0.0.1:8000/docs    for swagger
 app = FastAPI()
 
 app.include_router(courses.router)
+app.include_router(students.router)
 app.include_router(authentication.router)
 serv = Container.firebase_auth_service()
 
@@ -60,6 +62,7 @@ async def log_process_time(request: Request, call_next):
     start_time = time.time()
     response = await call_next(request)
     process_time = time.time() - start_time
+
 
     logging.info(" endpoint url:" + str(request.url) + " - process time: " + str(process_time) + "seconds")
     return response

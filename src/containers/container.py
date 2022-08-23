@@ -9,11 +9,25 @@ from src.persistence.mongo_repositories.course.course_mongo_service import Cours
 from src.application.abstract_mongo_repositories.course.abstract_course_mongo_service import AbstractCourseMongoService
 from src.persistence.connections.mongo_db_client import MongoDBClient
 
+
+from src.application.student_cqrs.commands.add_students_excel.add_students_excel_service import AddStudentsExcelService
+from src.application.student_cqrs.commands.add_students_excel.abstract_add_students_excel_service import AbstractAddStudentsExcelService
+from src.application.abstract_repositories.student.abstract_student_db_service import AbstractStudentDBService
+from src.persistence.repositories.student.student_db_service import StudentDBService
+
+from src.application.student_cqrs.queries.get_students_excel.get_students_excel_service import GetStudentsExcelService
+from src.application.student_cqrs.queries.get_students_excel.abstract_get_students_excel_service import AbstractGetStudentsExcelService
+
+
+from src.application.student_cqrs.commands.add_students_excel_mediatr.add_students_excel_command import AddStudentsExcelCommand
+from src.application.student_cqrs.commands.add_students_excel_mediatr.add_students_excel_command_handler import AddStudentsExcelCommandHandler
+
 #firebase:
 from src.infrastructure.ums_infrastucture.firebase_connection.firebase_engine import FirebaseEngine
 from src.infrastructure.ums_infrastucture.firebase_jwt_token.firebase_auth_service import FirebaseAuthService
 from src.infrastructure.ums_infrastructure_abstraction.firebase_jwt_token.abstract_firebase_auth_service \
     import AbstractFirebaseAuthService
+
 
 
 class Container(containers.DeclarativeContainer):
@@ -27,7 +41,7 @@ class Container(containers.DeclarativeContainer):
         MongoDBClient
     )
 
-    db_service = providers.Factory(
+    db_course_service = providers.Factory(
         AbstractCourseDBService.register(CourseDBService),
         engine=db_engine
     )
@@ -39,9 +53,39 @@ class Container(containers.DeclarativeContainer):
 
     course_service = providers.Factory(
         AbstractCourseService.register(CourseService),
-        db=db_service,
-        mongo_db = mongo_db_service
+        db=db_course_service,
+        mongo_db=mongo_db_service
     )
+
+    db_student_service = providers.Factory(
+        AbstractStudentDBService.register(StudentDBService),
+        engine=db_engine
+    )
+
+    add_students_excel_service = providers.Factory(
+        AbstractAddStudentsExcelService.register(AddStudentsExcelService),
+        db=db_student_service
+    )
+
+    get_students_excel_service = providers.Factory(
+        AbstractGetStudentsExcelService.register(GetStudentsExcelService),
+        db=db_student_service
+    )
+    
+    # mediator = providers.Factory(
+    #     Mediator
+    # )
+    #
+    # db_in_excel = providers.Factory(
+    #     AddStudentsExcelCommandHandler,
+    #     db_service=db_service
+    # )
+
+    #register handler in mediator
+    # add_students_excel_handler_registration = providers.Singleton(
+    #     AddStudentsExcelCommand.register(AddStudentsExcelCommandHandler),
+    #     db_service = db_service
+    # )
 
     #firebase
     firebase_engine = providers.Singleton(
