@@ -1,14 +1,14 @@
-from src.application.abstract_repositories.student.abstract_student_db_service import AbstractStudentDBService
+from src.domain.abstract_sql_repositories.student.abstract_student_sql_repository import AbstractStudentSqlRepository
 import sqlalchemy as db
 import pandas as pd
 
 
-class StudentDBService(AbstractStudentDBService):
+class StudentSqlRepository(AbstractStudentSqlRepository):
 
     def __init__(self, engine):
         self.engine = engine
 
-    def get_student(self, received_name: str, received_email:str) -> list:
+    def get_student(self, received_name: str, received_email: str) -> list:
         engine = self.engine.get_engine()
         connection = engine.connect()
         metadata = db.MetaData()
@@ -20,7 +20,7 @@ class StudentDBService(AbstractStudentDBService):
         result_set = result_proxy.fetchall()
         return result_set
 
-    def add_student(self, received_name:str, received_email:str):
+    def add_student(self, received_name:str, received_email: str):
         # engine = db.create_engine('postgresql://postgres:123456@localhost:5432/umsPython')
         engine = self.engine.get_engine()
         connection = engine.connect()

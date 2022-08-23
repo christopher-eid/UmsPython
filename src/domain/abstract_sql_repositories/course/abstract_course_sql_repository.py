@@ -1,13 +1,13 @@
 from abc import ABCMeta, ABC, abstractmethod
 
 
-class AbstractStudentDBService(ABC):
+class AbstractCourseSqlRepository(ABC):
     __metaclass__ = "ABCMeta"
 
     @abstractmethod
-    def add_student(self, received_name:str, received_email:str):
+    def add_course(self, received_course):
         raise NotImplementedError
 
     @abstractmethod
-    def get_student(self, received_name: str, received_email:str) -> list:
+    def get_course(self, received_name: str) -> list:
         raise NotImplementedError

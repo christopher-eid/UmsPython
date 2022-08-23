@@ -1,8 +1,7 @@
-from src.application.abstract_mongo_repositories.course.abstract_course_mongo_service import AbstractCourseMongoService
-import pymongo
+from src.domain.abstract_nosql_repositories.course.abstract_course_nosql_repository import AbstractCourseNoSqlRepository
 
 
-class CourseMongoService(AbstractCourseMongoService):
+class CourseNoSqlRepository(AbstractCourseNoSqlRepository):
 
     def __init__(self, mongo_db_client):
         self.mongo_db_client = mongo_db_client
