@@ -1,8 +1,24 @@
+
 from fastapi import FastAPI, Header, Request
 from fastapi.responses import JSONResponse
 from src.presentation.ums_web_api.routers import courses, authentication
 from src.containers.container import Container
 from firebase_admin import _auth_utils
+
+
+
+#for middleware with logger to display time for each request
+#pip install python-time to be able to import time , PYTHON-TIME NOT TIME
+
+import time
+import logging
+logging.basicConfig(format='[%(asctime)s %(levelname)s]:%(message)s', level=logging.INFO)
+#to disable uvicorn standard loggers
+uvicorn_error = logging.getLogger("uvicorn.error")
+uvicorn_error.disabled = True
+uvicorn_access = logging.getLogger("uvicorn.access")
+uvicorn_access.disabled = True
+
 
 '''
 Setting up and starting up the app:
@@ -39,7 +55,14 @@ async def check_jwt_token_header(request: Request, call_next):
     response = await call_next(request)
     return response
 
+@app.middleware("http")
+async def log_process_time(request: Request, call_next):
+    start_time = time.time()
+    response = await call_next(request)
+    process_time = time.time() - start_time
 
+    logging.info(" endpoint url:" + str(request.url) + " - process time: " + str(process_time) + "seconds")
+    return response
 
 
 
