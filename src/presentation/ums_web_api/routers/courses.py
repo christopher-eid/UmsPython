@@ -1,9 +1,11 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Header
 from src.containers.container import Container
 from src.domain.dtomodels.course_model import CourseModel
+from typing import Union
 
 router = APIRouter()
 reg = Container.course_service()
+
 
 
 @router.post("/courses/add_course", tags=["Course"])

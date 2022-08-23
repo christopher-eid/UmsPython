@@ -9,6 +9,7 @@ from src.persistence.mongo_repositories.course.course_mongo_service import Cours
 from src.application.abstract_mongo_repositories.course.abstract_course_mongo_service import AbstractCourseMongoService
 from src.persistence.connections.mongo_db_client import MongoDBClient
 
+
 from src.application.student_cqrs.commands.add_students_excel.add_students_excel_service import AddStudentsExcelService
 from src.application.student_cqrs.commands.add_students_excel.abstract_add_students_excel_service import AbstractAddStudentsExcelService
 from src.application.abstract_repositories.student.abstract_student_db_service import AbstractStudentDBService
@@ -20,6 +21,13 @@ from src.application.student_cqrs.queries.get_students_excel.abstract_get_studen
 
 from src.application.student_cqrs.commands.add_students_excel_mediatr.add_students_excel_command import AddStudentsExcelCommand
 from src.application.student_cqrs.commands.add_students_excel_mediatr.add_students_excel_command_handler import AddStudentsExcelCommandHandler
+
+#firebase:
+from src.infrastructure.ums_infrastucture.firebase_connection.firebase_engine import FirebaseEngine
+from src.infrastructure.ums_infrastucture.firebase_jwt_token.firebase_auth_service import FirebaseAuthService
+from src.infrastructure.ums_infrastructure_abstraction.firebase_jwt_token.abstract_firebase_auth_service \
+    import AbstractFirebaseAuthService
+
 
 
 class Container(containers.DeclarativeContainer):
@@ -63,6 +71,7 @@ class Container(containers.DeclarativeContainer):
         AbstractGetStudentsExcelService.register(GetStudentsExcelService),
         db=db_student_service
     )
+    
     # mediator = providers.Factory(
     #     Mediator
     # )
@@ -77,3 +86,13 @@ class Container(containers.DeclarativeContainer):
     #     AddStudentsExcelCommand.register(AddStudentsExcelCommandHandler),
     #     db_service = db_service
     # )
+
+    #firebase
+    firebase_engine = providers.Singleton(
+        FirebaseEngine
+    )
+
+    firebase_auth_service = providers.Factory(
+        AbstractFirebaseAuthService.register(FirebaseAuthService),
+        firebase_engine=firebase_engine
+    )
