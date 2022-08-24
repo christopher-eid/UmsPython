@@ -1,4 +1,6 @@
-from fastapi import APIRouter, UploadFile, Depends
+from fastapi import APIRouter, UploadFile, Depends, HTTPException
+
+from src.application.exceptions.application_based_exception import ApplicationBasedException
 from src.containers.container import Container
 from starlette.responses import JSONResponse
 
@@ -15,11 +17,16 @@ authentication_service = Container.firebase_auth_service()
 
 @router.post("/students/add_students_excel")
 async def add_students_excel(received_excel: UploadFile,  jwt_verify=Depends(authentication_service.verify_access_token)):
-    if type(jwt_verify) == JSONResponse:
-        return jwt_verify
-    result = add_students_excel_service.add_students(received_excel)
+    try:
+        if type(jwt_verify) == JSONResponse:
+            return jwt_verify
+        result = add_students_excel_service.add_students(received_excel)
+        return result
+    except ApplicationBasedException as e1:
+        raise HTTPException(status_code=400, detail=e1.message)
+    except Exception as e2:
+        raise HTTPException(status_code=500, detail=e2.__cause__)
 
-    return result
 
 
 

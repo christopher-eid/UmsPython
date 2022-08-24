@@ -24,19 +24,19 @@ class AddStudentsExcelService(AbstractAddStudentsExcelService):
             shutil.copyfileobj(received_excel.file, buffer)
         df = pd.read_excel(des_path)
         students_added = []
-        try:
+        # try:
 
-            for index, row in df.iterrows():
-                if self.db.get_student(row["name"], row["email"]):
-                    raise AlreadyAvailableException()
-                new_student = self.db.add_student(row["name"], row["email"])
-                students_added.append(new_student)
-            des_path.unlink()
-            return students_added  # return the dataframe of students we added, without their ids and role ids
-
-        except AlreadyAvailableException:
-            return StatusModel(success=False, description="Student Already Available")
-
+        for index, row in df.iterrows():
+            if self.db.get_student(row["name"], row["email"]):
+                raise AlreadyAvailableException("Student already existing")
+            new_student = self.db.add_student(row["name"], row["email"])
+            students_added.append(new_student)
+        des_path.unlink()
+        return students_added  # return the dataframe of students we added, without their ids and role ids
+        #
+        # except AlreadyAvailableException:
+        #     return StatusModel(success=False, description="Student Already Available")
+        #
 
 
 
