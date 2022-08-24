@@ -15,16 +15,16 @@ class CourseService(AbstractCourseService):
         self.mongo_db = mongo_db
 
     def add_course(self, received_course):
-        try:
-            available_course = self.db.get_course(received_course.name)
-            if available_course:
-                raise AlreadyAvailableException()
-            res = self.db.add_course(received_course)
-            mx = res.max_students_number
-            response = ResponseCourseModel(id=res.id, name=res.name, max_students_number=mx)
-            return response
-        except AlreadyAvailableException:
-            return StatusModel(success=False, description="Course Already Available")
+        #try:
+        available_course = self.db.get_course(received_course.name)
+        if available_course:
+            raise AlreadyAvailableException("Course already existing")
+        res = self.db.add_course(received_course)
+        mx = res.max_students_number
+        response = ResponseCourseModel(id=res.id, name=res.name, max_students_number=mx)
+        return response
+        # except AlreadyAvailableException:
+        #     return StatusModel(success=False, description="Course Already Available")
 
     def add_course_to_mongo(self, received_course):
         try:
